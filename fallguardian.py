@@ -36,16 +36,18 @@ def acc_callback(data):
     distance = math.sqrt(pow(data[1][0], 2) + pow(data[1][1], 2) + pow(data[1][2], 2))
     fall = False
 
-    data_p = {'t': data[0], 'x': data[1][0], 'y': data[1][1], 'z': data[1][2], 'd': distance, 'f': fall}
-    json_data = json.dumps(data_p)
     if distance >= 5.0:
         fall = True
         pattern = client.led.load_preset_pattern('solid', repeat_count=3)
         client.led.write_pattern(pattern, 'r')
         client.led.play()
+
+    data_p = {'t': data[0], 'x': data[1][0], 'y': data[1][1], 'z': data[1][2], 'd': distance, 'f': fall}
+    json_data = json.dumps(data_p)
+
+    if distance >= 5.0:
 	print("Fall detected: " + json_data)
         
-    #print(json_data)
     
 def run(server_class=HTTPServer, handler_class=WebServer, port=80):
     global client
